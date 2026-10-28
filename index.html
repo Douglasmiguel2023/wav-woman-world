@@ -38,8 +38,9 @@
         background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E");
       }
 
-      /* ---------- estrelas brancas em traço (line), evidentes, atrás do conteúdo ---------- */
-      #stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+      /* ---------- estrelas por cima do conteúdo: camada acima de logo,
+         faixa, botões e bolas; pointer-events:none mantém os toques livres ---------- */
+      #stars{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden}
       .star{position:absolute;top:-8vh;animation:starFall linear infinite}
       .star svg{display:block;animation:starTwinkle ease-in-out infinite alternate;filter:drop-shadow(0 0 3px rgba(255,255,255,.65))}
       @keyframes starFall{
@@ -359,7 +360,7 @@
 
     <script>
       // Estrelas brancas em traço (line), maiores e evidentes, caindo pela tela
-      // inteira atrás do conteúdo (z-index 0, sob a página)
+      // inteira por cima do conteúdo (z-index 5, sobre a página; sem bloquear toques)
       (function () {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
         var box = document.getElementById("stars");
