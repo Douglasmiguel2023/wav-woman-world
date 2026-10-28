@@ -132,6 +132,7 @@
         position:relative;display:flex;align-items:center;justify-content:center;
         text-decoration:none;text-align:center;
         border-radius:999px;
+        overflow:hidden;
         padding:17px 22px 16px;
         background:var(--bege);
         /* linha fina dourada envolta, delicada como a da referência */
@@ -154,7 +155,7 @@
          sem blur e sem filtros — leve no celular */
       .btn::before{
         content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
-        pointer-events:none;
+        pointer-events:none;z-index:2;
         background:linear-gradient(115deg,
           transparent 32%,
           rgba(255,246,218,.0) 42%,
@@ -176,7 +177,38 @@
         from{background-position:130% 0}
         to{background-position:-130% 0}
       }
+      /* sombra interna dourada atravessando o botão de um lado ao outro:
+         faixa suave na cor das letras (dourado), com bordas bem difusas
+         (efeito blur feito pelo próprio degradê, sem filter — leve no
+         celular); fica recortada dentro do pill (overflow:hidden do .btn),
+         não bloqueia o toque e anima só transform/opacidade */
+      .btn::after{
+        content:"";position:absolute;top:-12%;bottom:-12%;left:0;
+        width:55%;border-radius:inherit;
+        pointer-events:none;z-index:0;
+        background:linear-gradient(90deg,
+          transparent 0%,
+          rgba(168,135,79,.05) 22%,
+          rgba(168,135,79,.16) 50%,
+          rgba(191,160,107,.10) 68%,
+          transparent 100%);
+        box-shadow:inset 0 0 22px rgba(168,135,79,.10);
+        transform:translateX(-140%) skewX(-8deg);
+        opacity:0;
+        animation:innerSweep 8s ease-in-out infinite;
+      }
+      .btn:nth-child(2)::after{animation-delay:-2s}
+      .btn:nth-child(3)::after{animation-delay:-4s}
+      .btn:nth-child(4)::after{animation-delay:-6s}
+      @keyframes innerSweep{
+        0%{transform:translateX(-140%) skewX(-8deg);opacity:0}
+        14%{opacity:.55}
+        52%{transform:translateX(245%) skewX(-8deg);opacity:.55}
+        66%{transform:translateX(245%) skewX(-8deg);opacity:0}
+        100%{transform:translateX(245%) skewX(-8deg);opacity:0}
+      }
       .btn .lbl{
+        position:relative;z-index:1;
         font-size:21px;font-weight:400;letter-spacing:.05em;
         color:var(--ouro);line-height:1.15;
       }
@@ -297,7 +329,8 @@
       }
       @media (prefers-reduced-motion: reduce){
         .star,.star svg{animation:none !important}
-        .logo-emboss,.logo-main,.logo-sub,.strip,.strip-track,.btn,.btn::before,.social,.ball,footer{animation:none !important}
+        .logo-emboss,.logo-main,.logo-sub,.strip,.strip-track,.btn,.btn::before,.btn::after,.social,.ball,footer{animation:none !important}
+        .btn::after{opacity:0 !important}
       }
     </style>
   </head>
